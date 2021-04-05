@@ -99,18 +99,11 @@ impl Universe {
             .filter(|&&cell| cell == Cell::Alive)
             .count();
 
-        if self[(i, j)] == Cell::Alive {
-            if alive_count == 2 || alive_count == 3 {
-                Cell::Alive
-            } else {
-                Cell::Dead
-            }
-        } else {
-            if alive_count == 3 {
-                Cell::Alive
-            } else {
-                Cell::Dead
-            }
+        match (self[(i, j)], alive_count) {
+            (Cell::Alive, 1..=2) => Cell::Alive,
+            (Cell::Alive, _) => Cell::Dead,
+            (Cell::Dead, 3) => Cell::Alive,
+            (Cell::Dead, _) => Cell::Dead,
         }
     }
 }
